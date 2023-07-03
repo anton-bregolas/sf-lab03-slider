@@ -1,3 +1,5 @@
+// An array containing the collection of projects:
+
 let projects = [{
   url: "./images/projects-admiral.png",
   title: "Rostov-on-Don, Admiral",
@@ -21,23 +23,30 @@ let projects = [{
   cost: "Upon request"
 }];
 
+// Main function loading the slider:
+
 function initSlider(options) {
 
   let pause = options.pause;
   let interval = options.autoplayInterval;
   let playInterval = null;
 
-  const sliderWrapper = document.querySelector(".projects");
+  // Optimizing the selectors by limiting the scope of the search:
 
-  let sliderImages = sliderWrapper.querySelector(".projects-img-box");
-  let sliderArrows = sliderWrapper.querySelector(".projects-arrow-nav");
-  let sliderDots = sliderWrapper.querySelector(".projects-bullets");
-  let sliderTitles = sliderWrapper.querySelector(".projects-nav-title");
+  const sliderRightSide = document.querySelector(".projects-column-right");
+  const sliderLeftSide = document.querySelector(".projects-column-left");
 
-  let detailsCity = sliderWrapper.querySelector("#city");
-  let detailsArea = sliderWrapper.querySelector("#area");
-  let detailsTime = sliderWrapper.querySelector("#time");
-  let detailsCost = sliderWrapper.querySelector("#cost");
+  let sliderImages = sliderRightSide.querySelector(".projects-img-box");
+  let sliderTitles = sliderRightSide.querySelector(".projects-nav-title");
+  let sliderArrows = sliderLeftSide.querySelector(".projects-arrow-nav");
+  let sliderDots = sliderLeftSide.querySelector(".projects-bullets");
+
+  let detailsCity = sliderLeftSide.querySelector("#city");
+  let detailsArea = sliderLeftSide.querySelector("#area");
+  let detailsTime = sliderLeftSide.querySelector("#time");
+  let detailsCost = sliderLeftSide.querySelector("#cost");
+
+  // List of functions to be executed:
 
   initImages();
   initArrows();
@@ -46,19 +55,37 @@ function initSlider(options) {
   initDetails();
   createAutoButton();
 
+  // Setting the autoplay interval via sliderOptions:
+
   if (!pause) {
     playInterval = setInterval(initAutoplay, interval);
   }
 
+  // Insert project images into the image box using innerHTML:
+
+  // function initImages() {
+  //   projects.forEach((image, index) => {
+  //     let imageDiv = `<div class="image n${index} ${index === 0? "active" : ""}" 
+  //     style="background-image:url(${projects[index].url});
+  //     "data-index="${index}"></div>`;
+  //     sliderImages.innerHTML += imageDiv;
+  //   });
+  // }
+
+  // Insert project images into the image box using appendChild:
+
   function initImages() {
     projects.forEach((image, index) => {
-      let imageDiv = `<div class="image n${index} ${index === 0? "active" : ""}" 
-      style="background-image:url(${projects[index].url});
-      "data-index="${index}"></div>`;
-      sliderImages.innerHTML += imageDiv;
+      let imageElement = document.createElement("div");
+      imageElement.classList = `image n${index} ${index? "" : "active"}`; 
+      imageElement.dataset.index = index;
+      imageElement.style.backgroundImage = `url(${projects[index].url})`;
+      sliderImages.appendChild(imageElement);
     });
   }
   
+  // Set event listeners for the navigation arrows:
+
   function initArrows() {
     sliderArrows.querySelectorAll(".projects-arrow").forEach(arrow => {
       arrow.addEventListener("click", function() {
@@ -74,25 +101,64 @@ function initSlider(options) {
     });
   }
 
+  // Create slider dots using innerHTML:
+
+  // function initDots() {
+  //   projects.forEach((project, index) => {
+  //     let dot = `<div class="projects-bullet n${index} ${index === 0? "active" : ""}" 
+  //     data-index="${index}"></div>`;
+  //     sliderDots.innerHTML += dot;
+  //   });
+  //   sliderDots.querySelectorAll(".projects-bullet").forEach(dot => {
+  //     dot.addEventListener("click", function() {
+  //       moveSlider(this.dataset.index);
+  //     })
+  //   })
+  // }
+
+  // Create slider dots using appendChild:
+
   function initDots() {
     projects.forEach((project, index) => {
-      let dot = `<div class="projects-bullet n${index} ${index === 0? "active" : ""}" 
-      data-index="${index}"></div>`;
-      sliderDots.innerHTML += dot;
+      let dotElement = document.createElement("div");
+      dotElement.classList = `projects-bullet n${index} ${index? "" : "active"}`;
+      dotElement.dataset.index = index;
+      sliderDots.appendChild(dotElement);
     });
-    sliderDots.querySelectorAll(".projects-bullet").forEach(dot => {
+      sliderDots.querySelectorAll(".projects-bullet").forEach(dot => {
       dot.addEventListener("click", function() {
         moveSlider(this.dataset.index);
       })
     })
   }
 
+  // Create interactive project titles using innerHTML:
+
+  // function initTitles() {
+  //   projects.forEach((project, index) => {
+  //     let navTitle = `<li class="title projects-nav-item">
+  //     <a class="nav-item-title n${index} ${index === 0? "active" : ""}" 
+  //     data-index="${index}">${project.title}</a></li>`;
+  //     sliderTitles.innerHTML += navTitle;
+  //   });
+  //   sliderTitles.querySelectorAll(".nav-item-title").forEach(title => {
+  //     title.addEventListener("click", function() {
+  //       moveSlider(this.dataset.index);
+  //     })
+  //   })
+  // }
+
+  // Create interactive project titles using appendChild:
+
   function initTitles() {
     projects.forEach((project, index) => {
-      let navTitle = `<li class="title projects-nav-item">
-      <a class="nav-item-title n${index} ${index === 0? "active" : ""}" 
-      data-index="${index}">${project.title}</a></li>`;
-      sliderTitles.innerHTML += navTitle;
+      let navTitleElement = document.createElement("li"); 
+      navTitleElement.classList = "title projects-nav-item";
+      let navTitleLink = document.createElement("a");
+      navTitleLink.classList = `nav-item-title n${index} ${index? "" : "active"}`;
+      navTitleLink.dataset.index = index;
+      let navTitleText = document.createTextNode(`${project.title}`);
+      sliderTitles.appendChild(navTitleElement).appendChild(navTitleLink).appendChild(navTitleText);
     });
     sliderTitles.querySelectorAll(".nav-item-title").forEach(title => {
       title.addEventListener("click", function() {
@@ -101,32 +167,63 @@ function initSlider(options) {
     })
   }
 
+  // Fill in the details cards using innerHTML:
+
+  // function initDetails() {
+
+  //   projects.forEach((project, index) => {
+
+  //     let initCity = `<p class="projects-subtext text-p 
+  //     n${index} ${index === 0? "active" : ""}" 
+  //     data-index="${index}">${project.city}</p>`;
+
+  //     let initArea = `<p class="projects-subtext text-p 
+  //     n${index} ${index === 0? "active" : ""}" 
+  //     data-index="${index}">${project.area}</p>`;
+
+  //     let initTime = `<p class="projects-subtext text-p 
+  //     n${index} ${index === 0? "active" : ""}" 
+  //     data-index="${index}">${project.time}</p>`;
+
+  //     let initCost = `<p class="projects-subtext text-p 
+  //     n${index} ${index === 0? "active" : ""}" 
+  //     data-index="${index}">${project.cost}</p>`;
+
+  //     detailsCity.innerHTML += initCity;
+  //     detailsArea.innerHTML += initArea;
+  //     detailsTime.innerHTML += initTime;
+  //     detailsCost.innerHTML += initCost;
+  //   });
+  // }
+
+  // Fill in the details cards using appendChild:
+
   function initDetails() {
 
     projects.forEach((project, index) => {
 
-      let initCity = `<p class="projects-subtext text-p 
-      n${index} ${index === 0? "active" : ""}" 
-      data-index="${index}">${project.city}</p>`;
+      let cityText = project.city.split('<br>');
+      let cityText1 = document.createTextNode(cityText[0]);
+      let cityText2 = document.createTextNode(cityText[1]);
+      let areaText = document.createTextNode(`${project.area}`);
+      let timeText = document.createTextNode(`${project.time}`);
+      let costText = document.createTextNode(`${project.cost}`);
 
-      let initArea = `<p class="projects-subtext text-p 
-      n${index} ${index === 0? "active" : ""}" 
-      data-index="${index}">${project.area}</p>`;
+      let textElement = document.createElement("p");
+      textElement.classList = `projects-subtext text-p n${index} ${index? "" : "active"}`;
+      textElement.dataset.index = index; 
 
-      let initTime = `<p class="projects-subtext text-p 
-      n${index} ${index === 0? "active" : ""}" 
-      data-index="${index}">${project.time}</p>`;
-
-      let initCost = `<p class="projects-subtext text-p 
-      n${index} ${index === 0? "active" : ""}" 
-      data-index="${index}">${project.cost}</p>`;
-
-      detailsCity.innerHTML += initCity;
-      detailsArea.innerHTML += initArea;
-      detailsTime.innerHTML += initTime;
-      detailsCost.innerHTML += initCost;
+      detailsCity.appendChild(textElement);
+      detailsCity.lastChild.appendChild(cityText1);
+      detailsCity.lastChild.appendChild(document.createElement("br"));
+      detailsCity.lastChild.appendChild(cityText2);
+      detailsArea.appendChild(textElement.cloneNode()).appendChild(areaText);
+      detailsTime.appendChild(textElement.cloneNode()).appendChild(timeText);
+      detailsCost.appendChild(textElement.cloneNode()).appendChild(costText);
     });
   }
+
+  // Switch between the projects using css/opacity, highlight active elements:
 
   function moveSlider(num) {
     sliderImages.querySelector(".active").classList.remove("active");
@@ -146,11 +243,15 @@ function initSlider(options) {
     detailsCost.querySelector(".n" + num).classList.add("active");
   }
 
+  // Create the pause / play button:
+
   function createAutoButton() {
     let navButton = `<li class="nav-item-button-play ${pause === false? "active" : ""}">&#9658;</li>`;
     sliderTitles.insertAdjacentHTML("beforeend", navButton);
     sliderTitles.querySelector(".nav-item-button-play").addEventListener("click", toggleAutoplay);
   }
+
+  // Initiate autoplay using moveSlider:
 
   function initAutoplay() {
       let curNumber = +sliderImages.querySelector(".active").dataset.index;
@@ -158,23 +259,30 @@ function initSlider(options) {
       moveSlider(nextNumber);
   }
 
+  // Toggle autoplay on or off:
+
   function toggleAutoplay() {
+
+    sliderTitles.querySelector(".nav-item-button-play").classList.toggle("active");
+
     if (pause === false) {
       pause = true;
       clearInterval(playInterval);
-      sliderTitles.querySelector(".nav-item-button-play").classList.remove("active");
     } else {
       pause = false;
-      sliderTitles.querySelector(".nav-item-button-play").classList.add("active");
       playInterval = setInterval(initAutoplay, interval);
     }
   }
 }
 
+// Customizable autoplay options stored here:
+
 let sliderOptions = {
   pause: false,
   autoplayInterval: 2000
 };
+
+// Load the slider on DOMContentLoaded using initSlider:
 
 document.addEventListener("DOMContentLoaded", function() {
   initSlider(sliderOptions);

@@ -2,7 +2,6 @@ SF Lab 03: Slider
 ==================================================================
 TO DO:
 
-- Get rid of innerHTML += str to follow best practices.
 - Mobile version of the slider.
 - Simple version of the slider.
 
@@ -17,6 +16,7 @@ TO DO:
 - JS file includes the following autoplay options: 
 > *pause:* Whether or not the slideshow is active when page loaded (true by default)
 > *playInterval:* How fast the slides are changing (in milliseconds)
+- innerHTML replaced with appendChild in the code as a practice challenge.
 
 ## TASK
 
