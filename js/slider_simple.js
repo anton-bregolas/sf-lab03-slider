@@ -34,11 +34,11 @@ let detailsCost = sectionProjectsSlider.querySelector("#cost");
 
 let currentIndex = 0
 
-const updateNavigation = (index) => {
+const updateNavigation = () => {
   sliderTitles.querySelector(".active").classList.remove("active");
   sliderDots.querySelector(".active").classList.remove("active");
-  // sliderTitles.querySelector(`.nav-title-0${index}`).classList.add("active");
-  // sliderDots.querySelector(`.nav-item-0${index}`).classList.add("active");
+  sliderTitles.querySelector(`#nav-title-0${currentIndex}`).classList.add("active");
+  sliderDots.querySelector(`#nav-item-0${currentIndex}`).classList.add("active");
 }
 
 const loadProject = (index, init) => {
@@ -47,27 +47,42 @@ const loadProject = (index, init) => {
   detailsArea.innerHTML = arrProjects[index].area;
   detailsTime.innerHTML = arrProjects[index].time; 
   detailsCost.innerHTML = "Upon request";
-  !init? updateNavigation(currentIndex) : console.log(`Slider successfully initiated.`);
+  !init? updateNavigation() : console.log(`Slider successfully initiated.`);
 }
 
 loadProject(0, true);
 
 sliderArrowLeft.addEventListener('click', () => {
   if (currentIndex > 0) {
-    loadProject(currentIndex - 1);
-    currentIndex -= 1;
+    currentIndex--;
+
   } else {
-    loadProject(arrProjects.length - 1);
     currentIndex = arrProjects.length - 1;
   }
-})
+  loadProject(currentIndex);
+});
 
 sliderArrowRight.addEventListener('click', () => {
-  if (currentIndex < arrProjects.length - 1) {
-    loadProject(currentIndex + 1);
-    currentIndex += 1;
+  if (currentIndex < (arrProjects.length - 1)) {
+    currentIndex++;
   } else {
-    loadProject(0);
     currentIndex = 0;
   }
-})
+  loadProject(currentIndex);
+});
+
+sliderDots.querySelectorAll(".projects-bullet").forEach((dot) => {
+	dot.addEventListener('click', () => {
+    let dotIndex = dot.id.slice(-1);
+    currentIndex = dotIndex;
+    loadProject(currentIndex);
+	});
+});
+
+sliderTitles.querySelectorAll(".projects-nav-link").forEach((title) => {
+	title.addEventListener('click', () => {
+    let titleIndex = title.id.slice(-1);
+    currentIndex = titleIndex;
+    loadProject(currentIndex);
+	});
+});
