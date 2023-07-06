@@ -20,6 +20,8 @@ let arrProjects = [{
   time: "3 months"
 }];
 
+// Setting wrappers for querySelectors:
+
 const sectionProjectsSlider = document.querySelector(".projects");
 
 let sliderImages = sectionProjectsSlider.querySelector(".projects-img-box");
@@ -32,16 +34,35 @@ let detailsArea = sectionProjectsSlider.querySelector("#area");
 let detailsTime = sectionProjectsSlider.querySelector("#time");
 let detailsCost = sectionProjectsSlider.querySelector("#cost");
 
+// Set initial project to be loaded (0-2):
+
 let currentIndex = 0
 
-const updateNavigation = () => {
+// Main slider loading function:
+
+function initSimpleSlider() {
+  
+  loadProject(0, true);
+  loadArrows();
+  loadDots();
+  loadTitles();
+
+}
+
+// Move dots and navigation titles:
+
+function updateNavigation() {
+
   sliderTitles.querySelector(".active").classList.remove("active");
   sliderDots.querySelector(".active").classList.remove("active");
   sliderTitles.querySelector(`#nav-title-0${currentIndex}`).classList.add("active");
   sliderDots.querySelector(`#nav-item-0${currentIndex}`).classList.add("active");
 }
 
-const loadProject = (index, init) => {
+// Load images and insert descriptions:
+
+function loadProject (index, init) {
+
   sliderImages.style.backgroundImage = `url(${arrProjects[index].img})`;
   detailsCity.innerHTML = arrProjects[index].city;
   detailsArea.innerHTML = arrProjects[index].area;
@@ -50,39 +71,58 @@ const loadProject = (index, init) => {
   !init? updateNavigation() : console.log(`Slider successfully initiated.`);
 }
 
-loadProject(0, true);
+// Set event listeners for arrows:
 
-sliderArrowLeft.addEventListener('click', () => {
-  if (currentIndex > 0) {
-    currentIndex--;
+function loadArrows() {
 
-  } else {
-    currentIndex = arrProjects.length - 1;
-  }
-  loadProject(currentIndex);
-});
+  sliderArrowLeft.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
 
-sliderArrowRight.addEventListener('click', () => {
-  if (currentIndex < (arrProjects.length - 1)) {
-    currentIndex++;
-  } else {
-    currentIndex = 0;
-  }
-  loadProject(currentIndex);
-});
-
-sliderDots.querySelectorAll(".projects-bullet").forEach((dot) => {
-	dot.addEventListener('click', () => {
-    let dotIndex = dot.id.slice(-1);
-    currentIndex = dotIndex;
+    } else {
+      currentIndex = arrProjects.length - 1;
+    }
     loadProject(currentIndex);
-	});
-});
+  });
 
-sliderTitles.querySelectorAll(".projects-nav-link").forEach((title) => {
-	title.addEventListener('click', () => {
-    let titleIndex = title.id.slice(-1);
-    currentIndex = titleIndex;
+  sliderArrowRight.addEventListener('click', () => {
+    if (currentIndex < (arrProjects.length - 1)) {
+      currentIndex++;
+    } else {
+      currentIndex = 0;
+    }
     loadProject(currentIndex);
-	});
+  });
+}
+
+// Set event listeners for dots:
+
+function loadDots() {
+
+  sliderDots.querySelectorAll(".projects-bullet").forEach((dot) => {
+    dot.addEventListener('click', () => {
+      let dotIndex = dot.id.slice(-1);
+      currentIndex = dotIndex;
+      loadProject(currentIndex);
+    });
+  });
+}
+
+// Set event listeners for navigation titles:
+
+function loadTitles() {
+  
+  sliderTitles.querySelectorAll(".projects-nav-link").forEach((title) => {
+    title.addEventListener('click', () => {
+      let titleIndex = title.id.slice(-1);
+      currentIndex = titleIndex;
+      loadProject(currentIndex);
+    });
+  });
+}
+
+// Load the slider right after HTML is parsed: 
+
+document.addEventListener("DOMContentLoaded", function() {
+  initSimpleSlider();
 });
