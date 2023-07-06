@@ -137,11 +137,11 @@ function initSlider(options) {
   // function initTitles() {
   //   projects.forEach((project, index) => {
   //     let navTitle = `<li class="title projects-nav-item">
-  //     <a class="nav-item-title n${index} ${index === 0? "active" : ""}" 
+  //     <a class="nav-link-title n${index} ${index === 0? "active" : ""}" 
   //     data-index="${index}">${project.title}</a></li>`;
   //     sliderTitles.innerHTML += navTitle;
   //   });
-  //   sliderTitles.querySelectorAll(".nav-item-title").forEach(title => {
+  //   sliderTitles.querySelectorAll(".nav-link-title").forEach(title => {
   //     title.addEventListener("click", function() {
   //       moveSlider(this.dataset.index);
   //     })
@@ -155,12 +155,12 @@ function initSlider(options) {
       let navTitleElement = document.createElement("li"); 
       navTitleElement.classList = "title projects-nav-item";
       let navTitleLink = document.createElement("a");
-      navTitleLink.classList = `nav-item-title n${index} ${index? "" : "active"}`;
+      navTitleLink.classList = `nav-link-title n${index} ${index? "" : "active"}`;
       navTitleLink.dataset.index = index;
       let navTitleText = document.createTextNode(`${project.title}`);
       sliderTitles.appendChild(navTitleElement).appendChild(navTitleLink).appendChild(navTitleText);
     });
-    sliderTitles.querySelectorAll(".nav-item-title").forEach(title => {
+    sliderTitles.querySelectorAll(".nav-link-title").forEach(title => {
       title.addEventListener("click", function() {
         moveSlider(this.dataset.index);
       })
