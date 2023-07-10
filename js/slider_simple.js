@@ -2,18 +2,21 @@
 
 let arrProjects = [{
   img: "./images/projects-admiral.png",
+  mob: "./images/projects-admiral-mob.png",
   title: "Rostov-on-Don, Admiral",
   city: "Rostov-on-Don <br>LCD admiral",
   area: "81 m2",
   time: "3.5 months"
 }, {
   img: "./images/projects-thieves.png",
+  mob: "./images/projects-thieves-mob.png",
   title: "Sochi Thieves",
   city: "Sochi <br>Thieves",
   area: "105 m2",
   time: "4 months"
 }, {
   img: "./images/projects-patriotic.png",
+  mob: "./images/projects-patriotic-mob.png",
   title: "Rostov-on-Don Patriotic",
   city: "Rostov-on-Don <br>Patriotic",
   area: "93 m2",
@@ -25,9 +28,12 @@ let arrProjects = [{
 const sectionProjectsSlider = document.querySelector(".projects");
 
 let sliderImages = sectionProjectsSlider.querySelector(".projects-img-box");
+let sliderMobImages = sectionProjectsSlider.querySelector(".projects-mob-img-box");
 let sliderTitles = sectionProjectsSlider.querySelector(".projects-nav-title");
 let sliderArrowLeft = sectionProjectsSlider.querySelector(".arrow-left");
 let sliderArrowRight = sectionProjectsSlider.querySelector(".arrow-right");
+let sliderMobArrowLeft = sectionProjectsSlider.querySelector(".mob-arrow-left");
+let sliderMobArrowRight = sectionProjectsSlider.querySelector(".mob-arrow-right");
 let sliderDots = sectionProjectsSlider.querySelector(".projects-bullets");
 let detailsCity = sectionProjectsSlider.querySelector("#city");
 let detailsArea = sectionProjectsSlider.querySelector("#area");
@@ -64,6 +70,7 @@ function updateNavigation() {
 function loadProject (index, init) {
 
   sliderImages.style.backgroundImage = `url(${arrProjects[index].img})`;
+  sliderMobImages.style.backgroundImage = `url(${arrProjects[index].mob})`;
   detailsCity.innerHTML = arrProjects[index].city;
   detailsArea.innerHTML = arrProjects[index].area;
   detailsTime.innerHTML = arrProjects[index].time; 
@@ -86,6 +93,25 @@ function loadArrows() {
   });
 
   sliderArrowRight.addEventListener('click', () => {
+    if (currentIndex < (arrProjects.length - 1)) {
+      currentIndex++;
+    } else {
+      currentIndex = 0;
+    }
+    loadProject(currentIndex);
+  });
+
+  sliderMobArrowLeft.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+
+    } else {
+      currentIndex = arrProjects.length - 1;
+    }
+    loadProject(currentIndex);
+  });
+
+  sliderMobArrowRight.addEventListener('click', () => {
     if (currentIndex < (arrProjects.length - 1)) {
       currentIndex++;
     } else {

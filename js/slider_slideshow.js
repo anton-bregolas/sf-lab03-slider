@@ -2,6 +2,7 @@
 
 let projects = [{
   url: "./images/projects-admiral.png",
+  mob: "./images/projects-admiral-mob.png",
   title: "Rostov-on-Don, Admiral",
   city: "Rostov-on-Don <br>LCD admiral",
   area: "81 m2",
@@ -9,6 +10,7 @@ let projects = [{
   cost: "Upon request"
 }, {
   url: "./images/projects-thieves.png",
+  mob: "./images/projects-thieves-mob.png",
   title: "Sochi Thieves",
   city: "Sochi <br>Thieves",
   area: "105 m2",
@@ -16,6 +18,7 @@ let projects = [{
   cost: "Upon request"
 }, {
   url: "./images/projects-patriotic.png",
+  mob: "./images/projects-patriotic-mob.png",
   title: "Rostov-on-Don Patriotic",
   city: "Rostov-on-Don <br>Patriotic",
   area: "93 m2",
@@ -37,8 +40,10 @@ function initSlider(options) {
   const sliderLeftSide = document.querySelector(".projects-column-left");
 
   let sliderImages = sliderRightSide.querySelector(".projects-img-box");
+  let sliderMobImages = sliderLeftSide.querySelector(".projects-mob-img-box");
   let sliderTitles = sliderRightSide.querySelector(".projects-nav-title");
   let sliderArrows = sliderLeftSide.querySelector(".projects-arrow-nav");
+  let sliderMobArrows = sliderLeftSide.querySelector(".projects-mobile-slider");
   let sliderDots = sliderLeftSide.querySelector(".projects-bullets");
 
   let detailsCity = sliderLeftSide.querySelector("#city");
@@ -49,7 +54,9 @@ function initSlider(options) {
   // List of functions to be executed:
 
   initImages();
+  initMobImages();
   initArrows();
+  initMobArrows();
   initDots();
   initTitles();
   initDetails();
@@ -83,6 +90,18 @@ function initSlider(options) {
       sliderImages.appendChild(imageElement);
     });
   }
+
+  // Insert mobile version images into the mobile image box using appendChild:
+
+  function initMobImages() {
+    projects.forEach((image, index) => {
+      let imageElement = document.createElement("div");
+      imageElement.classList = `image n${index} ${index? "" : "active"}`; 
+      imageElement.dataset.index = index;
+      imageElement.style.backgroundImage = `url(${projects[index].mob})`;
+      sliderMobImages.appendChild(imageElement);
+    });
+  }
   
   // Set event listeners for the navigation arrows:
 
@@ -92,6 +111,21 @@ function initSlider(options) {
         let curNumber = +sliderImages.querySelector(".active").dataset.index;
         let nextNumber;
         if (arrow.classList.contains("arrow-left")) {
+          nextNumber = curNumber === 0? projects.length - 1 : curNumber - 1;
+        } else {
+          nextNumber = curNumber === projects.length - 1? 0 : curNumber + 1;
+        }
+        moveSlider(nextNumber);
+      });
+    });
+  }
+
+  function initMobArrows() {
+    sliderMobArrows.querySelectorAll(".projects-mob-button").forEach(button => {
+      button.addEventListener("click", function() {
+        let curNumber = +sliderMobImages.querySelector(".active").dataset.index;
+        let nextNumber;
+        if (button.classList.contains("left")) {
           nextNumber = curNumber === 0? projects.length - 1 : curNumber - 1;
         } else {
           nextNumber = curNumber === projects.length - 1? 0 : curNumber + 1;
@@ -228,6 +262,8 @@ function initSlider(options) {
   function moveSlider(num) {
     sliderImages.querySelector(".active").classList.remove("active");
     sliderImages.querySelector(".n" + num).classList.add("active");
+    sliderMobImages.querySelector(".active").classList.remove("active");
+    sliderMobImages.querySelector(".n" + num).classList.add("active");
     sliderDots.querySelector(".active").classList.remove("active");
     sliderDots.querySelector(".n" + num).classList.add("active");
     sliderTitles.querySelector(".active").classList.remove("active");
