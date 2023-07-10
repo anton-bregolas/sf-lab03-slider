@@ -2,7 +2,8 @@ SF Lab 03: Slider
 ==================================================================
 TO DO:
 
-- Mobile version of the slider.
+- Further testing to optimize mobile version of the slider.
+- Slideshow pause behavior and/or button for mobile version.
 
 ## DONE
 
@@ -12,6 +13,7 @@ TO DO:
 - Toggle between projects with arrows, dots and navigation titles.
 - Slider settings are partially pre-set in HTML.
 - Settings optimized for three projects only.
+- Mobile version of the slider for screens 1024px and lower.
 - Uses innerHTML.
 - No autoplay.
 
@@ -22,6 +24,7 @@ TO DO:
 - Several extra projects could be loaded, requiring some minor tweaks to the navigation panels.
 - Navigation toggles between the images and sets of texts using opacity.
 - Autoplay can be switched on and off using the play button above the images.
+- Mobile version of the slider for screens 1024px and lower.
 - JS file includes the following autoplay options: 
 > *pause:* Whether or not the slideshow is active when page loaded (false by default)
 > *playInterval:* How fast the slides are changing (in milliseconds, 2000 by default)
